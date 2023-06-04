@@ -1,16 +1,19 @@
 """main file for the project"""
 
 import sqlite3
+from sql_module import grubs
 
 with sqlite3.connect("employee.sqlite3") as connection:
-    # connects and runs a qureie the resault
-    # of witch is saved to the var resault.
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM employees_table")
-    resault = cursor.fetchall()  # the resault where the reault is saved.
+    # connects to the database and creates a grub
+    my_grub = grubs(database_connection=connection)
+    # saves the requested table to the var table
+    table = my_grub.get_all_of_table("employees_tables")
 
-for person in resault:
-    # lists through the pepole in the table
-    for item in person:
-        # lists through the items of info mation about each person.
-        print(item)
+# checks for error from the get_all_of_table method
+if isinstance(table, sqlite3.OperationalError):
+    print(table, type(table))
+else:
+    # loops through the people and items of info from the above table.
+    for person in table:
+        for item in person:
+            print(item)
