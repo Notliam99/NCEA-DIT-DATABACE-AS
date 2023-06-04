@@ -1,3 +1,5 @@
+"""tests my sql_module"""
+
 import sqlite3
 from sql_module import grubs
 
