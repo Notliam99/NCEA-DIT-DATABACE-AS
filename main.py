@@ -1,6 +1,7 @@
 """main file for the project"""
 
 import sqlite3
+import os
 from sql_module import grubs, seed
 
 with sqlite3.connect("employee.sqlite3") as connection:
@@ -10,13 +11,18 @@ with sqlite3.connect("employee.sqlite3") as connection:
     seedling = seed(database_connection=connection)
 
 
-def create_employee_form(access_table):
+def clarity():
+    """Clears console"""
+    os.system("clear")
+
+
+def create_employee_form(access_table, normal_table):
     """
     Its a form that gaters the requried user
     input in order to create a new employee
     """
     # Disable all the too-many-branches violations in this function
-    # pylint: disable=too-many-branches
+    # pylint: disable=too-many-branches,too-many-statements
     required_inputs = {
         "full_name": None,
         "address": None,
@@ -25,7 +31,11 @@ def create_employee_form(access_table):
         "access_level": None,
         "all_done": False
     }
+    clarity()
     while not required_inputs["all_done"]:
+        # while loop goes through the requried intputs that it needs
+        # and one at a time error checks each one then if it passes
+        # it saves it to the dictionary
         if required_inputs["full_name"] is None:
             temp_var = input("\nEnter full name : ")
             if len(temp_var) > 30:
@@ -71,7 +81,9 @@ def create_employee_form(access_table):
                 print("Enter a valid number.")
 
         else:
-            print("The folowing are the entered values")
+            # checks if the input is what the user wants if not it resets.
+            clarity()
+            print("\nThe folowing are the entered values")
             keys_to_check = list(required_inputs.keys())
             keys_to_check.pop(-1)
             for key in keys_to_check:
@@ -87,7 +99,13 @@ def create_employee_form(access_table):
                     "access_level": None,
                     "all_done": False
                 }
+    # creates a list output for the funtion as
+    # this gose directly into the seedling class
     return_list = list(required_inputs.values())
+    # Gives the user a id automaticly 1 higher than the last highest
+    return_list.insert(0, normal_table[-1][0]+1)
+    # Removes the all_done value as this is only
+    # needed to tell the above for loop to stop
     return_list.pop(-1)
     return return_list
 
@@ -95,6 +113,8 @@ def create_employee_form(access_table):
 def main(my_grub_main, seedling_main):
     """Main function for the program"""
 
+    # Menu system
+    clarity()
     pick = str(input(
         """
 Do you want to either
@@ -102,24 +122,32 @@ Do you want to either
 2) create a new employee
 > """
     ))
+
+    # list off employees function
     if "1" in pick:
         for employee in my_grub_main.get_all_of_table("employees_table"):
             print(
-                f"employee id number {employee[0]} his name is {employee[1]}"
+                f"\nEmployee id number {employee[0]} his name is {employee[1]}"
             )
             print(f"Full info\naddrees: {employee[2]}\nWork From Home: \
 {employee[3]}\nFun Fact: {employee[4]}\nAccess Level ID: {employee[5]}")
 
-
+    # add an employee function
     if "2" in pick:
         access_table = my_grub_main.get_all_of_table("access_schema")
+        normal_table = my_grub_main.get_all_of_table("employees_table")
         seedling_main.insert_to_table(
             "employees_table",
-            create_employee_form(access_table=access_table)
+            create_employee_form(
+                access_table=access_table,
+                normal_table=normal_table
+            )
         )
+    # End
 
 
 if __name__ == "__main__":
     main(my_grub_main=my_grub, seedling_main=seedling)
-    while "n" in input("Quit Program (y/n) : ").lower():
+    # checks if the user wants to quit the program or not
+    while "n" in input("\nQuit Program (y/n) : ").lower():
         main(my_grub_main=my_grub, seedling_main=seedling)
