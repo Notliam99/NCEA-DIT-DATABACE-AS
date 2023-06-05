@@ -6,14 +6,8 @@ from sql_module import grubs, seed
 with sqlite3.connect("employee.sqlite3") as connection:
     # connects to the database and creates a grub
     my_grub = grubs(database_connection=connection)
-    # saves the requested table to the var table
-<<<<<<< HEAD
-    table = my_grub.get_all_of_table("employees_table")
-=======
+    # shares the connection with seed and creates a seed object
     seedling = seed(database_connection=connection)
->>>>>>> 792ce5e (added ading functionality)
-
-# checks for error from the get_all_of_table method
 
 
 def create_employee_form(access_table):
@@ -113,6 +107,9 @@ Do you want to either
             print(
                 f"employee id number {employee[0]} his name is {employee[1]}"
             )
+            print(f"Full info\naddrees: {employee[2]}\nWork From Home: \
+{employee[3]}\nFun Fact: {employee[4]}\nAccess Level ID: {employee[5]}")
+
 
     if "2" in pick:
         access_table = my_grub_main.get_all_of_table("access_schema")
@@ -124,3 +121,5 @@ Do you want to either
 
 if __name__ == "__main__":
     main(my_grub_main=my_grub, seedling_main=seedling)
+    while "n" in input("Quit Program (y/n) : ").lower():
+        main(my_grub_main=my_grub, seedling_main=seedling)
