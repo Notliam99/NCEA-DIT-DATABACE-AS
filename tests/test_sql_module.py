@@ -2,6 +2,7 @@
 
 import sqlite3
 from sql_module import grubs
+from sql_module import seed
 
 
 def test_get_all_of_table():
@@ -27,3 +28,25 @@ def test_get_all_of_table():
         table = my_grub.get_all_of_table("test")
         # table should be: (('True',))
         assert bool(table[0][0] == 'True')
+
+
+def test_adding_people():
+    """
+    test the module seed by creating a memory database and
+    using the function seed with the memory data base.
+    """
+    with sqlite3.connect(":memory:") as connection:
+        # The setup for the test table
+        cursor = connection.cursor()
+        cursor.execute("CREATE TABLE test(verify);")
+        connection.commit()
+        # End
+        # Creates a instance of the seed class
+        my_seed = seed(database_connection=connection)
+        # Runs the metod that im testing
+        my_seed.insert_to_table(table_name="test", items=("True",))
+        # Test that the method works
+        resalt = cursor.execute("SELECT * FROM test")
+        resalt = resalt.fetchall()
+        assert resalt[0][0] == "True"
+        # End
