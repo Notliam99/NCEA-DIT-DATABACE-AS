@@ -28,7 +28,7 @@ class Get:
             )
 
             return tuple(
-        contents.fetchall()
+                contents.fetchall()
             )
         # checks that the qurie was sucsessful if not it will pass the excetion
         except sqlite3.OperationalError as error_message:
