@@ -7,7 +7,7 @@ with sqlite3.connect("employee.sqlite3") as connection:
     # connects to the database and creates a grub
     my_grub = grubs(database_connection=connection)
     # saves the requested table to the var table
-    table = my_grub.get_all_of_table("employees_tables")
+    table = my_grub.get_all_of_table("employees_table")
 
 # checks for error from the get_all_of_table method
 if isinstance(table, sqlite3.OperationalError):
