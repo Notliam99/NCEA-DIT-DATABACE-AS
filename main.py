@@ -12,6 +12,7 @@ with sqlite3.connect("employee.sqlite3") as connection:
 
 
 def clarity():
+    """Clears console"""
     os.system("clear")
 
 
@@ -21,7 +22,7 @@ def create_employee_form(access_table, normal_table):
     input in order to create a new employee
     """
     # Disable all the too-many-branches violations in this function
-    # pylint: disable=too-many-branches
+    # pylint: disable=too-many-branches,too-many-statements
     required_inputs = {
         "full_name": None,
         "address": None,
