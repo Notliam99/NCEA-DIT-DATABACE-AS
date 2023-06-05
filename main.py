@@ -110,6 +110,7 @@ Do you want to either
             print(f"Full info\naddrees: {employee[2]}\nWork From Home: \
 {employee[3]}\nFun Fact: {employee[4]}\nAccess Level ID: {employee[5]}")
 
+
     if "2" in pick:
         access_table = my_grub_main.get_all_of_table("access_schema")
         seedling_main.insert_to_table(
